@@ -26,10 +26,16 @@ def gen_gcode(width, length, stepover, depth, passes, feed_rate):
     # TODO: incorporate passes and dpeth
     gcode = f"\nG91\n{feed_rate}\n"
     num_x_steps = math.ceil(width / stepover / 2)
-    for x_step in range(num_x_steps):
-        if x_step > 0:
-            gcode += f"\nG1 X{stepover}"
-        gcode += f"\nG1 Y{length}\nG1 X{stepover}\nG1 Y-{length}\n"
+    for i in range(passes):
+        gcode += f"\n(Pass number {i + 1})\n"
+        if i > 0:
+            # move spindle down after the first pass
+            gcode += f"\nZ-{depth}\n"
+        for x_step in range(num_x_steps):
+            if x_step > 0:
+                # no need to move spindle to the right on first move
+                gcode += f"\nG1 X{stepover}"
+            gcode += f"\nG1 Y{length}\nG1 X{stepover}\nG1 Y-{length}\n"
 
 
     # TODO: save g code to disk
