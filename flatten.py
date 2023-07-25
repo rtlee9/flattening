@@ -24,7 +24,7 @@ import click
 def gen_gcode(width, length, stepover, depth, passes, feed_rate):
     """Generate g code for flattening slabs."""
     # TODO: incorporate passes and dpeth
-    gcode = f"\nG91\n{feed_rate}\n"
+    gcode = f"\nG91\nF{feed_rate}\n"
     num_x_steps = math.ceil(width / stepover / 2)
     for i in range(passes):
         gcode += f"\n(Pass number {i + 1})\n"
