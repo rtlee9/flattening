@@ -29,9 +29,11 @@ def gen_gcode(width, length, stepover, depth, passes, feed_rate):
         gcode += f"\n(Pass number {i + 1})\n"
         if i > 0:
             # move spindle down after the first pass
-            gcode += f"\nG1 X0 Y0\nG1 Z-{depth}\n"
+            gcode += f"\nG0 X0 Y0\nG1 Z-{depth}\n"
         for x_step in range(num_x_steps):
             gcode += f"\nG1 X{stepover * x_step * 2}\nG1 Y{length}\nG1 X{stepover * (x_step * 2 + 1)}\nG1 Y0\n"
+        # move spindle up safe distance
+        gcode += f"\nG1 Z0.1"
 
     # TODO: save g code to disk
     print(gcode)
