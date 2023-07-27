@@ -23,7 +23,7 @@ import click
 )
 def gen_gcode(width, length, stepover, depth, passes, feed_rate):
     """Generate g code for flattening slabs."""
-    gcode = f"\nG90\nF{feed_rate}\n"
+    gcode = f"\nG90\nF{feed_rate}\nG1"
     num_x_steps = math.ceil(width / stepover / 2)
     for i in range(passes):
         gcode += f"\n(Pass number {i + 1})\n"
@@ -31,9 +31,9 @@ def gen_gcode(width, length, stepover, depth, passes, feed_rate):
             # move spindle down after the first pass
             gcode += f"\nG0 X0 Y0\nG1 Z-{depth}\n"
         for x_step in range(num_x_steps):
-            gcode += f"\nG1 X{stepover * x_step * 2}\nG1 Y{length}\nG1 X{stepover * (x_step * 2 + 1)}\nG1 Y0\n"
+            gcode += f"\nX{stepover * x_step * 2}\nY{length}\nX{stepover * (x_step * 2 + 1)}\nY0\n"
         # move spindle up safe distance
-        gcode += f"\nG1 Z0.1"
+        gcode += f"\nZ0.1"
 
     # TODO: save g code to disk
     print(gcode)
