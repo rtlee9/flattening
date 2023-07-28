@@ -33,7 +33,7 @@ def gen_gcode(width, length, stepover, depth, passes, feed_rate):
         for x_step in range(num_x_steps):
             gcode += f"\nX{stepover * x_step * 2}\nY{length}\nX{stepover * (x_step * 2 + 1)}\nY0\n"
         # move spindle up safe distance
-        gcode += f"\nZ{SAFE_DISTANCE - i * depth}"
+        gcode += f"\nZ{SAFE_DISTANCE - i * depth}\M2"
 
     # TODO: save g code to disk
     print(gcode)
