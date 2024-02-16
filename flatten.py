@@ -26,7 +26,7 @@ SAFE_DISTANCE = 0.1
 def gen_gcode(width, length, stepover, depth, passes, feed_rate, spindle_speed):
     """Generate g code for flattening slabs."""
     gcode = f"\nG90\nF{feed_rate}\nG0 Z{SAFE_DISTANCE}\nS{spindle_speed} M3"
-    num_x_steps = math.ceil(width / stepover / 2)
+    num_x_steps = math.ceil(width / max(stepover, -stepover) / 2)
     for i in range(passes):
         gcode += f"\n(Pass number {i + 1})\n"
         # move spindle down
