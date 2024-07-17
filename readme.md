@@ -1,6 +1,6 @@
 # Flatten Wood Slabs
 
-This project is a CLI tool for generating G-code for flattening wood slabs. It allows users to specify the width, length, stepover, depth, and other parameters to generate customized G-code for their specific flattening needs.
+This project is a CLI tool for generating G-code for flattening wood slabs on a CNC machine. It allows users to specify the width, length, stepover, depth, and other parameters to generate G-code to flatten a given slab.
 
 ## Usage
 
@@ -37,3 +37,7 @@ The CLI tool provides several options to customize the flattening process. Here 
 - `--width`: Specify the width (X axis) of the workpiece to flatten.
 
 - `--length`: Specify the length (Y axis) of the workpiece to flatten.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE.txt).
