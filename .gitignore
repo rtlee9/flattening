@@ -1,2 +1,4 @@
 flatten.TAP
 .vscode/*
+*.nc
+*.gcode
