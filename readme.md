@@ -6,17 +6,18 @@ This project is a CLI tool for generating G-code for flattening wood slabs on a 
 
 To use the tool, follow these steps:
 
-1. Install the required dependencies by running `pip install -r requirements.txt`.
+1. Run the CLI tool by executing the command `python flatten.py`, setting slab parameters as documented below.
 
-2. Open your terminal or command prompt and navigate to the project directory.
+1. Copy the output of the program to your clipbboard
 
-3. Run the CLI tool by executing the command `python flatten.py`.
+1. Paste the G-code into your CNC controller, such as Mach4
 
-4. Follow the prompts to enter the desired values for the width, length, stepover, depth, and other parameters.
+1. Zero your axes
+    1. Set your Z-axis zero to the upper-most height of the slab
+    1. Set your X-axis zero to the side of the slab closest to true X0
+    1. Set your Y-Axis zero to the side of the slab closest to true Y0
 
-5. Once the G-code is generated, copy it to your clipboard.
-
-6. Paste the G-code into your CNC controller, such as Mach4, to execute the flattening process.
+1. Run the program to flatten your slab
 
 ## Options
 
