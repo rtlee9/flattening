@@ -4,7 +4,7 @@ This project is a CLI tool for generating G-code for flattening wood slabs on a 
 
 ## Usage
 
-To use the tool, follow these steps:
+To use the CLI tool, follow these steps:
 
 1. Run the CLI tool by executing the command `python flatten.py`, setting slab parameters as documented below.
 
@@ -38,6 +38,29 @@ The CLI tool provides several options to customize the flattening process. Here 
 - `--width`: Specify the width (X axis) of the workpiece to flatten.
 
 - `--length`: Specify the length (Y axis) of the workpiece to flatten.
+
+## Web App
+
+Prefer a UI? Install Django (`python -m pip install django`) and run:
+
+```bash
+python manage.py runserver
+```
+
+Then open http://127.0.0.1:8000/ and fill in the form to generate G-code without the CLI prompts.
+
+## Development
+
+- Install dependencies: `python -m pip install -r requirements.txt`
+- Run tests: `pytest`
+
+## Deploying to Dokku (flattener.ryanlee.site)
+
+- Ensure DNS: `A flattener.ryanlee.site -> <dokku-server-ip>`
+- Add domain: `dokku domains:add flattener flattener.ryanlee.site`
+- Remove default internal host: `dokku domains:remove flattener flattener.dokku0214onubuntu2004-s-1vcpu-1gb-sfo3-01`
+- Enable TLS: `dokku letsencrypt:enable flattener`
+- Verify: `dokku domains:report flattener` shows only your real domain
 
 ## License
 

@@ -10,7 +10,7 @@ SAFE_DISTANCE = 0.1
 @click.option(
     "--passes", default=1, help="Number of passes at a specific Z coordinate to take"
 )
-@click.option("--depth", default=0.125, help="Depth of cut")
+@click.option("--depth", default=0.1, help="Depth of cut")
 @click.option("--stepover", default=1.24, help="Stepover")
 @click.option(
     "--width",

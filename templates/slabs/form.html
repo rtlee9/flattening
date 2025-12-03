@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Flatten Slab - Web</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --accent: #22c55e;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --border: #1f2937;
+    }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, var(--bg), #0b1224);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .container {
+      width: min(1200px, 100%);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: 26px;
+    }
+    p {
+      margin: 0 0 14px;
+      color: var(--muted);
+    }
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px 16px;
+      align-items: end;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: var(--muted);
+    }
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0b1224;
+      color: var(--text);
+      font-size: 15px;
+    }
+    button {
+      padding: 12px 14px;
+      border: none;
+      border-radius: 12px;
+      background: var(--accent);
+      color: #0b1224;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 120ms ease, box-shadow 120ms ease;
+    }
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 30px rgba(34, 197, 94, 0.25);
+    }
+    textarea {
+      width: 100%;
+      min-height: 380px;
+      resize: vertical;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #0b1224;
+      color: var(--text);
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 14px;
+    }
+    .errors {
+      background: #431420;
+      border: 1px solid #7f1d35;
+      color: #fecdd3;
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .hint {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .copy-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .subtext {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Flatten a slab</h1>
+      <p>Enter your slab and tool settings.</p>
+
+      {% if form.errors %}
+        <div class="errors">
+          Please fix the highlighted fields.
+        </div>
+      {% endif %}
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+          <div>
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+              <div class="errors" style="margin-top:6px;">{{ field.errors|join:", " }}</div>
+            {% endif %}
+            {% if field.help_text %}
+              <div class="hint">{{ field.help_text }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <div>
+          <button type="submit">Generate G-code</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2 style="margin-top:0;">Result</h2>
+      <div class="copy-row">
+        <p class="subtext">Copy and paste this into your CNC controller once zeroed.</p>
+        <button type="button" id="copy-btn">Copy G-code</button>
+      </div>
+      <textarea id="gcode-output" readonly placeholder="G-code will appear here after you submit the form.">{% if gcode_output %}{{ gcode_output }}{% endif %}</textarea>
+    </div>
+  </div>
+  <script>
+    const copyBtn = document.getElementById("copy-btn");
+    const output = document.getElementById("gcode-output");
+    copyBtn?.addEventListener("click", async () => {
+      if (!output || !output.value.trim()) {
+        copyBtn.textContent = "Nothing to copy";
+        setTimeout(() => copyBtn.textContent = "Copy G-code", 1200);
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(output.value);
+        copyBtn.textContent = "Copied!";
+      } catch (err) {
+        output.select();
+        document.execCommand("copy");
+        copyBtn.textContent = "Copied!";
+      }
+      setTimeout(() => copyBtn.textContent = "Copy G-code", 1400);
+    });
+  </script>
+</body>
+</html>
