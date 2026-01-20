@@ -1,7 +1,7 @@
 import math
 import click
 
-SAFE_DISTANCE = 0.1
+SAFE_DISTANCE    = 0.1
 
 @click.command()
 @click.option("--feed-rate", default=250, help="Feed rate in IPM")
@@ -27,6 +27,7 @@ SAFE_DISTANCE = 0.1
 def gen_gcode(width, length, stepover, depth, passes, feed_rate, spindle_speed, skip_direction):
     """Generate g code for flattening slabs."""
     gcode = f"\nG90\nF{feed_rate}\nG0 Z{SAFE_DISTANCE}\nG0 X0 Y0\nS{spindle_speed} M3"
+    time = 0
     num_x_steps = width / max(stepover, -stepover) / 2
     if skip_direction:
         num_x_steps *= 2
@@ -39,12 +40,14 @@ def gen_gcode(width, length, stepover, depth, passes, feed_rate, spindle_speed, 
             if skip_direction:
                 x_step /= 2
             gcode += f"\nX{stepover * x_step * 2}\nY{length}\nX{stepover * (x_step * 2 + (0 if skip_direction == 'backwards' else 1))}\nY0\n"
+            time += 2 * (length + stepover) / feed_rate
         # move spindle up safe distance
         gcode += f"\nZ{SAFE_DISTANCE - i * depth}"
     gcode += "\nM30"
 
     # TODO: save g code to disk
     print(gcode)
+    print(f";Estimated running time: {time:0.1f} minutes")
 
 
 if __name__ == "__main__":
