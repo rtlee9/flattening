@@ -10,7 +10,7 @@ SKIP_CHOICES = [
 class SlabForm(forms.Form):
     width = forms.FloatField(min_value=0.01, label="Width (X axis)")
     length = forms.FloatField(min_value=0.01, label="Length (Y axis)")
-    stepover = forms.FloatField(min_value=0.01, label="Stepover", initial=1.24)
+    stepover = forms.FloatField(label="Stepover", initial=1.24)
     depth = forms.FloatField(min_value=0.001, label="Depth per pass", initial=0.1)
     passes = forms.IntegerField(min_value=1, max_value=50, initial=1, label="Passes")
     feed_rate = forms.FloatField(min_value=1, label="Feed rate (IPM)", initial=250)
