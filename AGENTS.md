@@ -2,9 +2,10 @@
 
 ## Project Structure & Module Organization
 - `flatten.py`: Click-based CLI that generates G-code for flattening CNC wood slabs; keep the CLI slim and push logic to helpers.
+- `index.html`: Standalone static web page with client-side JavaScript G-code generation; no server required — just open in a browser.
 - `flattening_web/`: Django project settings/urls/wsgi for the web UI.
 - `slabs/`: Django app with forms/views and shared G-code generation logic in `slabs/utils.py`.
-- `templates/slabs/form.html`: Web form for non-technical users.
+- `templates/slabs/form.html`: Django web form for non-technical users.
 - `tests/`: Pytest suite; add new tests near related modules.
 - `readme.md`: User-facing usage notes; keep CLI/Web instructions aligned with options.
 - `requirements.txt`: Runtime/dev dependencies; prefer adding libs here instead of ad-hoc installs.
